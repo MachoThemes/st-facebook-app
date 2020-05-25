@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Facebook Login</title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+</head>
+<body>
+	<p>Token Page : <span id="token"></span></p>
+	<script type="text/javascript">
+		function popup(url, width, height, callback) {
+			var top = top || screen.height / 2 - height / 2,
+			    left = left || screen.width / 2 - width / 2,
+			    win = window.open(url, '', 'location=1,status=1,resizable=yes,width=' + width + ',height=' + height + ',top=' + top + ',left=' + left);
+			function check() {
+				if (!win || win.closed !== false) {
+					callback();
+				} else {
+					setTimeout(check, 100);
+				}
+			}
+			setTimeout(check, 100);
+		}
+
+		$(document).ready(function(){
+
+			popup('https://strongtestimonials.com/facebook_app_test/?sessionID=george', 850, 660, function () {
+				jQuery.ajax({
+					url: 'https://strongtestimonials.com/facebook_app_test/access_token.php',
+					data: {
+						sessionID: 'george'
+					},
+					crossDomain: true,
+					success: function success(output) {
+						var response = JSON.parse(output);
+						$('#token').html( response.access_token );
+					}
+				});
+			});
+
+		});
+		
+	</script>
+</body>
+</html>
